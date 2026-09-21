@@ -11,6 +11,7 @@ I also used AI to learn how to do benchmark using chrono library
 using namespace std;
 using namespace chrono;
 
+//Check if the vector isSorted
 bool isSorted(const vector<int>& values){
     for (int i = 1; i < values.size(); i++) {
         if (values[i - 1] > values[i]) {
@@ -20,6 +21,7 @@ bool isSorted(const vector<int>& values){
     return true;
 }
 
+//Bubble Sort
 void bubbleSort(vector<int>& values) {
     // Rounds
     for (int i = 0; i < values.size() - 1; i++) {
@@ -35,6 +37,7 @@ void bubbleSort(vector<int>& values) {
     }
 }
 
+//Selection Sort
 void selectionSort(vector<int>& values) {
     for (int i = 0; i < values.size() - 1; i++) {
         int smallest = i;
@@ -52,6 +55,7 @@ void selectionSort(vector<int>& values) {
     }
 }
 
+//Insertion Sort
 void insertionSort(vector<int>& values) {
     for (int i = 1; i < values.size(); i++) {
         //save the current number
@@ -66,28 +70,37 @@ void insertionSort(vector<int>& values) {
     }
 }
 
+
 int quickSortHelper(vector<int>& values, int low, int high) {
+    //Find middle
     int middle = low + (high - low) / 2;
+    //Use the middle as the pivot value
     int pivot = values[middle];
     bool done = false;
+    //while it is not done
     while (!done) {
+        //Move low to the right while the value is smaller than the pivot
         while (values[low] < pivot) {
             low++;
         }
+        //Move high to the left while the value is bigger than the pivot
         while (pivot < values[high]) {
             high--;
         }
+        //Stop if low and high meet or cross
         if (low >= high) {
             done = true;
         } else{
+            //Swap the value at high and low
             int temp = values[low];
             values[low] = values[high];
             values[high] = temp;
-
+            //Move low right and high left
             low++;
             high--;
         }
     }
+    //Return the value that uses to split
     return high;
 }
 
@@ -95,22 +108,27 @@ void quickSortR(vector<int>& values, int low, int high) {
     if (high <= low) {
         return;
     }
+    //Split the vector into two parts
     int split = quickSortHelper(values, low, high);
+    //Sort the left side
     quickSortR(values, low, split);
+    //Sort the right side
     quickSortR(values, split + 1, high);
 }
 
 void quickSort(vector<int>& values) {
+    //start from first to last index
     quickSortR(values, 0, values.size() - 1);
 }
 
-double benchmark(void (*sortFunction)(vector<int>&), const vector<int>& orginal) {
+//Benchmark
+double benchmark(void (*sortFunction)(vector<int>&), const vector<int>& original) {
     double totalTime = 0;
 
     // Run 5 times
     for (int i = 0; i < 5; i++) {
-        // A copy of the orginal vector
-        vector<int> values = orginal;
+        // A copy of the original vector
+        vector<int> values = original;
         auto start = high_resolution_clock:: now();
         sortFunction(values);
         auto end = high_resolution_clock::now();
