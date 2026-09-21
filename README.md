@@ -552,3 +552,19 @@ Average Time: 0.305417 ms
 |10000|Random|390.187|159.088|85.404|1.113|
 |10000|Sorted|158.149|158.091|0.050|0.309|
 |10000|Reverse|345.359|165.900|170.190|0.305|
+
+Bubble sort has O(n²) best, average, and worst time because it always runs through the nested loops. Sorted input was still faster because no swaps were needed. Random and reverse input required more swaps, so they took longer.
+
+Selection sort is O(n²) for the best, average, and worst cases. It always searches through the remaining values to find the smallest value. This can be seen in the results because random, sorted, and reverse inputs had similar runtimes.
+
+Insertion sort has a best case of O(n) when the input is already sorted because the values do not need to move. Its average and worst cases are O(n²). Reverse-sorted input is the worst because each value may need to move through most of the vector. This is why sorted input was extremely fast while reverse input was much slower.
+
+Quicksort has a best and average case of O(n log n) and a worst case of O(n²). My implementation uses the middle value as the pivot, which worked well for random, sorted, and reverse input in these tests. Quicksort was the fastest algorithm overall, especially as the input size became larger.
+
+## Complexity
+|Sorting Method|Best Case|Average|Worst Case|
+|---|---|---|---|
+|Bubble Sort|O(n²)|O(n²)|O(n²)|
+|Selection Sort|O(n²)|O(n²)|O(n²)|
+|Insertion Sort|O(n)|O(n²)|O(n²)|
+|Quick Sort|O(n log n)|O(n log n)|O(n²)|
