@@ -14,6 +14,7 @@ I also used AI to learn how to do benchmark using chrono library
 using namespace std;
 using namespace chrono;
 
+//Check if the vector isSorted
 bool isSorted(const vector<int>& values){
     for (int i = 1; i < values.size(); i++) {
         if (values[i - 1] > values[i]) {
@@ -23,6 +24,7 @@ bool isSorted(const vector<int>& values){
     return true;
 }
 
+//Bubble Sort
 void bubbleSort(vector<int>& values) {
     // Rounds
     for (int i = 0; i < values.size() - 1; i++) {
@@ -38,6 +40,7 @@ void bubbleSort(vector<int>& values) {
     }
 }
 
+//Selection Sort
 void selectionSort(vector<int>& values) {
     for (int i = 0; i < values.size() - 1; i++) {
         int smallest = i;
@@ -55,6 +58,7 @@ void selectionSort(vector<int>& values) {
     }
 }
 
+//Insertion Sort
 void insertionSort(vector<int>& values) {
     for (int i = 1; i < values.size(); i++) {
         //save the current number
@@ -69,28 +73,37 @@ void insertionSort(vector<int>& values) {
     }
 }
 
+
 int quickSortHelper(vector<int>& values, int low, int high) {
+    //Find middle
     int middle = low + (high - low) / 2;
+    //Use the middle as the pivot value
     int pivot = values[middle];
     bool done = false;
+    //while it is not done
     while (!done) {
+        //Move low to the right while the value is smaller than the pivot
         while (values[low] < pivot) {
             low++;
         }
+        //Move high to the left while the value is bigger than the pivot
         while (pivot < values[high]) {
             high--;
         }
+        //Stop if low and high meet or cross
         if (low >= high) {
             done = true;
         } else{
+            //Swap the value at high and low
             int temp = values[low];
             values[low] = values[high];
             values[high] = temp;
-
+            //Move low right and high left
             low++;
             high--;
         }
     }
+    //Return the value that uses to split
     return high;
 }
 
@@ -98,22 +111,27 @@ void quickSortR(vector<int>& values, int low, int high) {
     if (high <= low) {
         return;
     }
+    //Split the vector into two parts
     int split = quickSortHelper(values, low, high);
+    //Sort the left side
     quickSortR(values, low, split);
+    //Sort the right side
     quickSortR(values, split + 1, high);
 }
 
 void quickSort(vector<int>& values) {
+    //start from first to last index
     quickSortR(values, 0, values.size() - 1);
 }
 
-double benchmark(void (*sortFunction)(vector<int>&), const vector<int>& orginal) {
+//Benchmark
+double benchmark(void (*sortFunction)(vector<int>&), const vector<int>& original) {
     double totalTime = 0;
 
     // Run 5 times
     for (int i = 0; i < 5; i++) {
-        // A copy of the orginal vector
-        vector<int> values = orginal;
+        // A copy of the original vector
+        vector<int> values = original;
         auto start = high_resolution_clock:: now();
         sortFunction(values);
         auto end = high_resolution_clock::now();
@@ -211,104 +229,104 @@ Size: 1000
 Random Input
 
 Bubble Sort
-Run 1: 7.7085 ms
-Run 2: 8.27992 ms
-Run 3: 7.63846 ms
-Run 4: 6.65867 ms
-Run 5: 6.35842 ms
-Average Time: 7.32879 ms
+Run 1: 7.08921 ms
+Run 2: 6.44025 ms
+Run 3: 6.22167 ms
+Run 4: 5.97767 ms
+Run 5: 5.06329 ms
+Average Time: 6.15842 ms
 
 Selection Sort
-Run 1: 2.60075 ms
-Run 2: 2.72363 ms
-Run 3: 2.61575 ms
-Run 4: 2.24492 ms
-Run 5: 2.50738 ms
-Average Time: 2.53848 ms
+Run 1: 2.5195 ms
+Run 2: 2.35887 ms
+Run 3: 2.10508 ms
+Run 4: 2.15721 ms
+Run 5: 2.50913 ms
+Average Time: 2.32996 ms
 
 Insertion Sort
-Run 1: 1.16171 ms
-Run 2: 1.21554 ms
-Run 3: 1.00942 ms
-Run 4: 1.0255 ms
-Run 5: 1.17304 ms
-Average Time: 1.11704 ms
+Run 1: 0.991 ms
+Run 2: 1.09754 ms
+Run 3: 1.08167 ms
+Run 4: 1.08937 ms
+Run 5: 1.21417 ms
+Average Time: 1.09475 ms
 
 Quick Sort
-Run 1: 0.109334 ms
-Run 2: 0.100334 ms
-Run 3: 0.095125 ms
-Run 4: 0.092458 ms
-Run 5: 0.090834 ms
-Average Time: 0.097617 ms
+Run 1: 0.251125 ms
+Run 2: 0.182875 ms
+Run 3: 0.111834 ms
+Run 4: 0.101458 ms
+Run 5: 0.103958 ms
+Average Time: 0.15025 ms
 
 Sorted Input
 
 Bubble Sort
-Run 1: 2.14404 ms
-Run 2: 2.10012 ms
-Run 3: 1.96854 ms
-Run 4: 1.90542 ms
-Run 5: 2.02346 ms
-Average Time: 2.02832 ms
+Run 1: 2.10379 ms
+Run 2: 1.83946 ms
+Run 3: 1.86096 ms
+Run 4: 2.21175 ms
+Run 5: 2.26183 ms
+Average Time: 2.05556 ms
 
 Selection Sort
-Run 1: 2.01367 ms
-Run 2: 1.74658 ms
-Run 3: 1.8135 ms
-Run 4: 1.95 ms
-Run 5: 2.20621 ms
-Average Time: 1.94599 ms
+Run 1: 2.02467 ms
+Run 2: 1.74842 ms
+Run 3: 2.62779 ms
+Run 4: 1.95646 ms
+Run 5: 1.82563 ms
+Average Time: 2.03659 ms
 
 Insertion Sort
-Run 1: 0.004917 ms
-Run 2: 0.004958 ms
-Run 3: 0.005083 ms
-Run 4: 0.005041 ms
-Run 5: 0.005041 ms
-Average Time: 0.005008 ms
+Run 1: 0.004959 ms
+Run 2: 0.004916 ms
+Run 3: 0.004875 ms
+Run 4: 0.004875 ms
+Run 5: 0.004875 ms
+Average Time: 0.0049 ms
 
 Quick Sort
-Run 1: 0.027125 ms
-Run 2: 0.026333 ms
-Run 3: 0.0265 ms
-Run 4: 0.025458 ms
-Run 5: 0.025208 ms
-Average Time: 0.0261248 ms
+Run 1: 0.029834 ms
+Run 2: 0.025958 ms
+Run 3: 0.025959 ms
+Run 4: 0.025958 ms
+Run 5: 0.025958 ms
+Average Time: 0.0267334 ms
 
 Reverse Input
 
 Bubble Sort
-Run 1: 3.97867 ms
-Run 2: 4.46604 ms
-Run 3: 3.89487 ms
-Run 4: 4.19433 ms
-Run 5: 3.851 ms
-Average Time: 4.07698 ms
+Run 1: 4.71037 ms
+Run 2: 4.24117 ms
+Run 3: 4.95021 ms
+Run 4: 4.36896 ms
+Run 5: 4.35412 ms
+Average Time: 4.52497 ms
 
 Selection Sort
-Run 1: 2.06421 ms
-Run 2: 2.0305 ms
-Run 3: 1.98392 ms
-Run 4: 1.91821 ms
-Run 5: 2.10442 ms
-Average Time: 2.02025 ms
+Run 1: 1.99362 ms
+Run 2: 2.10167 ms
+Run 3: 2.03683 ms
+Run 4: 1.99796 ms
+Run 5: 1.8905 ms
+Average Time: 2.00412 ms
 
 Insertion Sort
-Run 1: 2.27129 ms
-Run 2: 1.9 ms
-Run 3: 1.92013 ms
-Run 4: 2.43279 ms
-Run 5: 1.95679 ms
-Average Time: 2.0962 ms
+Run 1: 2.02771 ms
+Run 2: 1.95112 ms
+Run 3: 2.07258 ms
+Run 4: 1.95946 ms
+Run 5: 2.00062 ms
+Average Time: 2.0023 ms
 
 Quick Sort
-Run 1: 0.02775 ms
-Run 2: 0.026708 ms
-Run 3: 0.026667 ms
-Run 4: 0.026625 ms
-Run 5: 0.026708 ms
-Average Time: 0.0268916 ms
+Run 1: 0.02925 ms
+Run 2: 0.029625 ms
+Run 3: 0.066125 ms
+Run 4: 0.107416 ms
+Run 5: 0.029375 ms
+Average Time: 0.0523582 ms
 
 -------
 Size: 5000
@@ -317,104 +335,104 @@ Size: 5000
 Random Input
 
 Bubble Sort
-Run 1: 106.395 ms
-Run 2: 98.8812 ms
-Run 3: 96.9357 ms
-Run 4: 97.1905 ms
-Run 5: 97.0389 ms
-Average Time: 99.2882 ms
+Run 1: 107.516 ms
+Run 2: 102.119 ms
+Run 3: 98.8868 ms
+Run 4: 97.278 ms
+Run 5: 96.6002 ms
+Average Time: 100.48 ms
 
 Selection Sort
-Run 1: 40.5516 ms
-Run 2: 40.9535 ms
-Run 3: 41.177 ms
-Run 4: 41.3012 ms
-Run 5: 41.1615 ms
-Average Time: 41.029 ms
+Run 1: 40.4186 ms
+Run 2: 40.0565 ms
+Run 3: 40.2474 ms
+Run 4: 40.2374 ms
+Run 5: 40.0948 ms
+Average Time: 40.2109 ms
 
 Insertion Sort
-Run 1: 22.9693 ms
-Run 2: 22.5078 ms
-Run 3: 21.8717 ms
-Run 4: 21.9319 ms
-Run 5: 21.9078 ms
-Average Time: 22.2377 ms
+Run 1: 22.0487 ms
+Run 2: 22.2286 ms
+Run 3: 21.9711 ms
+Run 4: 21.7693 ms
+Run 5: 21.8789 ms
+Average Time: 21.9793 ms
 
 Quick Sort
-Run 1: 0.53025 ms
-Run 2: 0.51775 ms
-Run 3: 0.505166 ms
-Run 4: 0.502584 ms
-Run 5: 0.50225 ms
-Average Time: 0.5116 ms
+Run 1: 0.542166 ms
+Run 2: 0.52275 ms
+Run 3: 0.510833 ms
+Run 4: 0.618334 ms
+Run 5: 0.661375 ms
+Average Time: 0.571092 ms
 
 Sorted Input
 
 Bubble Sort
-Run 1: 40.9919 ms
-Run 2: 42.2595 ms
-Run 3: 40.0017 ms
-Run 4: 39.8597 ms
-Run 5: 40.0328 ms
-Average Time: 40.6291 ms
+Run 1: 40.6416 ms
+Run 2: 39.647 ms
+Run 3: 39.977 ms
+Run 4: 39.67 ms
+Run 5: 39.5528 ms
+Average Time: 39.8977 ms
 
 Selection Sort
-Run 1: 40.1435 ms
-Run 2: 40.215 ms
-Run 3: 40.0352 ms
-Run 4: 39.8998 ms
-Run 5: 39.9973 ms
-Average Time: 40.0582 ms
+Run 1: 39.8802 ms
+Run 2: 39.6882 ms
+Run 3: 39.5398 ms
+Run 4: 41.1707 ms
+Run 5: 41.1542 ms
+Average Time: 40.2866 ms
 
 Insertion Sort
-Run 1: 0.023875 ms
-Run 2: 0.023625 ms
-Run 3: 0.0235 ms
-Run 4: 0.023459 ms
+Run 1: 0.023708 ms
+Run 2: 0.023459 ms
+Run 3: 0.023625 ms
+Run 4: 0.023542 ms
 Run 5: 0.0235 ms
-Average Time: 0.0235918 ms
+Average Time: 0.0235668 ms
 
 Quick Sort
-Run 1: 0.142042 ms
-Run 2: 0.14625 ms
-Run 3: 0.135791 ms
-Run 4: 0.13575 ms
-Run 5: 0.140917 ms
-Average Time: 0.14015 ms
+Run 1: 0.140792 ms
+Run 2: 0.139208 ms
+Run 3: 0.1355 ms
+Run 4: 0.1355 ms
+Run 5: 0.1355 ms
+Average Time: 0.1373 ms
 
 Reverse Input
 
 Bubble Sort
-Run 1: 87.877 ms
-Run 2: 86.362 ms
-Run 3: 87.9938 ms
-Run 4: 89.2492 ms
-Run 5: 87.6514 ms
-Average Time: 87.8267 ms
+Run 1: 87.7547 ms
+Run 2: 85.9575 ms
+Run 3: 85.8395 ms
+Run 4: 85.8153 ms
+Run 5: 85.5684 ms
+Average Time: 86.1871 ms
 
 Selection Sort
-Run 1: 43.109 ms
-Run 2: 42.4101 ms
-Run 3: 41.797 ms
-Run 4: 42.0995 ms
-Run 5: 41.5761 ms
-Average Time: 42.1983 ms
+Run 1: 41.9613 ms
+Run 2: 41.6112 ms
+Run 3: 41.6793 ms
+Run 4: 41.5985 ms
+Run 5: 41.5881 ms
+Average Time: 41.6877 ms
 
 Insertion Sort
-Run 1: 43.2374 ms
-Run 2: 42.7353 ms
-Run 3: 42.9278 ms
-Run 4: 42.8565 ms
-Run 5: 42.9873 ms
-Average Time: 42.9489 ms
+Run 1: 43.2285 ms
+Run 2: 42.9099 ms
+Run 3: 42.8175 ms
+Run 4: 42.7052 ms
+Run 5: 42.7535 ms
+Average Time: 42.8829 ms
 
 Quick Sort
-Run 1: 0.149834 ms
-Run 2: 0.145875 ms
-Run 3: 0.146167 ms
-Run 4: 0.150166 ms
-Run 5: 0.145875 ms
-Average Time: 0.147583 ms
+Run 1: 0.150375 ms
+Run 2: 0.149292 ms
+Run 3: 0.148167 ms
+Run 4: 0.148625 ms
+Run 5: 0.148208 ms
+Average Time: 0.148933 ms
 
 -------
 Size: 10000
@@ -423,102 +441,102 @@ Size: 10000
 Random Input
 
 Bubble Sort
-Run 1: 390.735 ms
-Run 2: 389.967 ms
-Run 3: 390.326 ms
-Run 4: 390.67 ms
-Run 5: 392.124 ms
-Average Time: 390.764 ms
+Run 1: 392.83 ms
+Run 2: 386.667 ms
+Run 3: 387.428 ms
+Run 4: 393.723 ms
+Run 5: 390.287 ms
+Average Time: 390.187 ms
 
 Selection Sort
-Run 1: 161.42 ms
-Run 2: 162.042 ms
-Run 3: 160.647 ms
-Run 4: 159.591 ms
-Run 5: 160.729 ms
-Average Time: 160.886 ms
+Run 1: 159.86 ms
+Run 2: 160.004 ms
+Run 3: 158.724 ms
+Run 4: 158.468 ms
+Run 5: 158.386 ms
+Average Time: 159.088 ms
 
 Insertion Sort
-Run 1: 86.0407 ms
-Run 2: 86.1341 ms
-Run 3: 85.98 ms
-Run 4: 85.6513 ms
-Run 5: 85.8575 ms
-Average Time: 85.9327 ms
+Run 1: 85.6922 ms
+Run 2: 85.4701 ms
+Run 3: 85.3173 ms
+Run 4: 85.2059 ms
+Run 5: 85.3326 ms
+Average Time: 85.4036 ms
 
 Quick Sort
-Run 1: 1.10912 ms
-Run 2: 1.09296 ms
-Run 3: 1.13288 ms
-Run 4: 1.09654 ms
-Run 5: 1.09442 ms
-Average Time: 1.10518 ms
+Run 1: 1.10821 ms
+Run 2: 1.09304 ms
+Run 3: 1.13721 ms
+Run 4: 1.12604 ms
+Run 5: 1.09942 ms
+Average Time: 1.11278 ms
 
 Sorted Input
 
 Bubble Sort
-Run 1: 160.526 ms
-Run 2: 160.183 ms
-Run 3: 160.238 ms
-Run 4: 158.656 ms
-Run 5: 159.305 ms
-Average Time: 159.781 ms
+Run 1: 158.821 ms
+Run 2: 157.624 ms
+Run 3: 157.776 ms
+Run 4: 158.316 ms
+Run 5: 158.208 ms
+Average Time: 158.149 ms
 
 Selection Sort
-Run 1: 158.715 ms
-Run 2: 158.972 ms
-Run 3: 159.356 ms
-Run 4: 158.956 ms
-Run 5: 159.647 ms
-Average Time: 159.129 ms
+Run 1: 157.95 ms
+Run 2: 157.698 ms
+Run 3: 158.69 ms
+Run 4: 157.894 ms
+Run 5: 158.224 ms
+Average Time: 158.091 ms
 
 Insertion Sort
-Run 1: 0.048 ms
-Run 2: 0.047917 ms
-Run 3: 0.047833 ms
-Run 4: 0.047708 ms
-Run 5: 0.047875 ms
-Average Time: 0.0478666 ms
+Run 1: 0.056667 ms
+Run 2: 0.048834 ms
+Run 3: 0.046875 ms
+Run 4: 0.046917 ms
+Run 5: 0.049792 ms
+Average Time: 0.049817 ms
 
 Quick Sort
-Run 1: 0.317209 ms
-Run 2: 0.340167 ms
-Run 3: 0.346708 ms
-Run 4: 0.375417 ms
-Run 5: 0.29525 ms
-Average Time: 0.33495 ms
+Run 1: 0.28475 ms
+Run 2: 0.283375 ms
+Run 3: 0.283334 ms
+Run 4: 0.284625 ms
+Run 5: 0.409584 ms
+Average Time: 0.309134 ms
 
 Reverse Input
 
 Bubble Sort
-Run 1: 348.114 ms
-Run 2: 346.136 ms
-Run 3: 345.388 ms
-Run 4: 346.205 ms
-Run 5: 347.603 ms
-Average Time: 346.689 ms
+Run 1: 344.553 ms
+Run 2: 346.422 ms
+Run 3: 348.464 ms
+Run 4: 343.26 ms
+Run 5: 344.095 ms
+Average Time: 345.359 ms
 
 Selection Sort
-Run 1: 167.808 ms
-Run 2: 168.062 ms
-Run 3: 168.023 ms
-Run 4: 171.833 ms
-Run 5: 171.27 ms
-Average Time: 169.399 ms
+Run 1: 166.111 ms
+Run 2: 165.711 ms
+Run 3: 165.988 ms
+Run 4: 165.7 ms
+Run 5: 165.991 ms
+Average Time: 165.9 ms
 
 Insertion Sort
-Run 1: 173.751 ms
-Run 2: 171.002 ms
-Run 3: 172.045 ms
-Run 4: 175.679 ms
-Run 5: 173.015 ms
-Average Time: 173.098 ms
+Run 1: 170.468 ms
+Run 2: 170.071 ms
+Run 3: 169.941 ms
+Run 4: 170.453 ms
+Run 5: 170.015 ms
+Average Time: 170.19 ms
 
 Quick Sort
-Run 1: 0.315209 ms
-Run 2: 0.311917 ms
-Run 3: 0.309125 ms
-Run 4: 0.36425 ms
-Run 5: 0.319417 ms
-Average Time: 0.323984 ms
+Run 1: 0.305167 ms
+Run 2: 0.303625 ms
+Run 3: 0.303542 ms
+Run 4: 0.311167 ms
+Run 5: 0.303583 ms
+Average Time: 0.305417 ms
 ```
