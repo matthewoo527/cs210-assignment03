@@ -568,3 +568,6 @@ Quicksort has a best and average case of O(n log n) and a worst case of O(n²). 
 |Selection Sort|O(n²)|O(n²)|O(n²)|
 |Insertion Sort|O(n)|O(n²)|O(n²)|
 |Quick Sort|O(n log n)|O(n log n)|O(n²)|
+
+## Design Decisions
+In quickSort, I used a helper function, quick sort recursion function and a quick sort function to sort the vector. I used 1000, 5000, 10000 as the size of the vector. Then create sorted, unsorted and reverse vector and use the sorting method to sort the vector.
